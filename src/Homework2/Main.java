@@ -25,7 +25,8 @@ public class Main {
         System.out.println("What do you want?\n" +
                 "1.See Telephone Book\n" +
                 "2.Add new record\n" +
-                "3.Exit");
+                "3.Delete record\n" +
+                "4.Exit");
 
         String input = in.nextLine();
 
@@ -40,12 +41,12 @@ public class Main {
                     addNewRecord(phoneBook);
                     break;
                 case 3:
+                    deleteRecord(phoneBook);
+                    break;
+                case 4:
                     flag = false;
                     System.out.println("Bye-bye");
                     break;
-                default:
-                    System.out.println("Oops");
-                    System.exit(0);
             }
         }
     }
@@ -85,9 +86,32 @@ public class Main {
             telephoneBook.put(key, new User(name, surname, telephoneNumber));
             System.out.println("Successful addition!\n");
         } else {
-            System.out.println("The phone book already has a record with that name and surname");
+            System.out.println("The Phone Book already has a record with this name and surname\n");
         }
     }
+
+    private static void deleteRecord(HashMap<String, User> telephoneBook){
+        System.out.println("Enter the name of person which you want to delete");
+        String name = in.nextLine();
+        if (!check(name, patternForNames)) {
+            return;
+        }
+
+        System.out.println("Enter the surname of person which you want to delete");
+        String surname = in.nextLine();
+        if (!check(surname, patternForNames)) {
+            return;
+        }
+
+        String key = name + surname;
+        if (telephoneBook.containsKey(key)){
+            telephoneBook.remove(key);
+            System.out.println("Successful deletion!\n");
+        } else {
+            System.out.println("There is no record in the Phone Book with this name and surname\n");
+        }
+    }
+
     private static boolean check(String input, Pattern pattern){
         Matcher matcher = pattern.matcher(input);
         for (int i = 0; i < input.length(); i++) {
